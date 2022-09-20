@@ -4,14 +4,13 @@
   background-position: center;
   min-width: 32px;
   min-height: 32px;
-  background-color: #000000;
   background-color: transparent;
   border: 0;
   position: absolute;
-  top: 0;
+  top: -40px;
   right: -40px;
-  margin-top: 155px;
   padding: 0;
+  cursor: pointer;
 }
 
 .popup__button-close:hover {
@@ -22,7 +21,8 @@
   .popup__button-close {
     min-width: 20px;
     min-height: 20px;
-    margin-top: 87px;
+    background-size: cover;
+    top: -36px;
     right: 0;
   }
 }

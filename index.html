@@ -9,7 +9,9 @@
   <body class="page">
 
     <header class="header">
-      <img class="header__logo" src="./images/header-logo.svg" alt="Логотип Место">
+      <div class="header__container">
+        <img class="header__logo" src="./images/header-logo.svg" alt="Логотип Место">
+      </div>
     </header>
 
     <main>
@@ -19,61 +21,61 @@
           <img class="profile__avatar" src="./images/profile-avatar.jpg" alt="фото Кусто">
           <div class="profile__info">
             <h1 class="profile__tittle">Жак-Ив Кусто</h1>
-            <button class="profile__edit-button"></button>
+            <button type="button" class="profile__edit-button" aria-label="Редактировать"></button>
             <p class="profile__subtitle">Исследователь океана</p>
           </div>
         </div>
-        <button class="profile__add-button"></button>
+        <button type="button" class="profile__add-button" aria-label="Добавить"></button>
       </section>
 
       <section class="elements">
 
         <div class="element">
           <img class="element__image" src="./images/element-karachaevsk.jpg" alt="церковь в горах">
-          <article class="element__info">
+          <div class="element__info">
             <h2 class="element__tittle">Карачаевск</h2>
-            <button class="element__heart"></button>
-          </article>
+            <button type="button" class="element__heart" aria-label="Оценить"></button>
+          </div>
         </div>
 
         <div class="element">
           <img class="element__image" src="./images/elenent-elbrus.jpg" alt="горы Эльбрус">
-          <article class="element__info">
+          <div class="element__info">
             <h2 class="element__tittle">Гора Эльбрус</h2>
-            <button class="element__heart"></button>
-          </article>
+            <button type="button" class="element__heart" aria-label="Оценить"></button>
+          </div>
         </div>
 
         <div class="element">
           <img class="element__image" src="./images/element-dombai.jpg" alt="горы Домбай">
-          <article class="element__info">
+          <div class="element__info">
             <h2 class="element__tittle">Домбай</h2>
-            <button class="element__heart"></button>
-          </article>
+            <button type="button" class="element__heart" aria-label="Оценить"></button>
+          </div>
         </div>
 
         <div class="element">
           <img class="element__image" src="./images/elenent-elbrus.jpg" alt="горы Эльбрус">
-          <article class="element__info">
+          <div class="element__info">
             <h2 class="element__tittle">Гора Эльбрус</h2>
-            <button class="element__heart"></button>
-          </article>
+            <button type="button" class="element__heart" aria-label="Оценить"></button>
+          </div>
         </div>
 
         <div class="element">
           <img class="element__image" src="./images/element-dombai.jpg" alt="горы Домбай">
-          <article class="element__info">
+          <div class="element__info">
             <h2 class="element__tittle">Домбай</h2>
-            <button class="element__heart"></button>
-          </article>
+            <button type="button" class="element__heart" aria-label="Оценить"></button>
+          </div>
         </div>
 
         <div class="element">
           <img class="element__image" src="./images/element-karachaevsk.jpg" alt="церковь в горах">
-          <article class="element__info">
+          <div class="element__info">
             <h2 class="element__tittle">Карачаево-Черкессия</h2>
-            <button class="element__heart"></button>
-          </article>
+            <button type="button" class="element__heart" aria-label="Оценить"></button>
+          </div>
         </div>
 
       </section>
@@ -86,13 +88,13 @@
 
     <div class="popup">
       <div class="popup__container">
-        <form class="popup__form">
-          <h2 class="popup__tittle">Редактировать профиль</h2>
-          <input class="popup__item" type="text" id="nameInput" name="name" placeholder="Жак-Ив Кусто">
-          <input class="popup__item" type="text" id="jobInput" name="job" placeholder="Исследователь океана">
-          <button class="popup__button-save" type="submit">Сохранить</button>
+        <form class="popup__form" name="editForm">
+          <h3 class="popup__tittle">Редактировать профиль</h3>
+          <input class="popup__item popup__item_input_name" type="text" name="name" placeholder="Жак-Ив Кусто">
+          <input class="popup__item popup__item_input_job" type="text" name="job" placeholder="Исследователь океана">
+          <button type="submit" class="popup__button-save">Сохранить</button>
         </form>
-        <button class="popup__button-close"></button>
+        <button type="button" class="popup__button-close" aria-label="Закрыть"></button>
       </div>
     </div>
     
