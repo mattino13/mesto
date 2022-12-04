@@ -9,3 +9,21 @@
     max-width: 282px;
   }
 }
+
+.popup__content {
+  margin: auto;
+  position: relative;
+}
+
+.popup__image {
+  max-width: 75vw;
+  max-height: 75vh;
+}
+
+.popup__subtitle {
+  font-size: 12px;
+  line-height: 0.8;
+  color: #FFFFFF;
+  margin: 0;
+  padding-top: 10px;
+}

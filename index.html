@@ -27,7 +27,7 @@
       </section>
 
       <section class="elements">
-
+<!--
         <div class="element">
           <img class="element__image" src="./images/element-karachaevsk.jpg" alt="церковь в горах">
           <div class="element__info">
@@ -75,7 +75,7 @@
             <button type="button" class="element__heart" aria-label="Оценить"></button>
           </div>
         </div>
-
+-->
       </section>
 
     </main>
@@ -84,17 +84,48 @@
       <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
     </footer>
 
-    <div class="popup">
+    <div class="popup popup_profile">
       <div class="popup__container">
-        <form class="popup__form" name="editForm">
+        <form class="popup__form popup__form_profile" name="editProfileForm">
           <h3 class="popup__tittle">Редактировать профиль</h3>
           <input class="popup__item popup__item_input_name" type="text" name="name" placeholder="Жак-Ив Кусто">
           <input class="popup__item popup__item_input_job" type="text" name="job" placeholder="Исследователь океана">
           <button type="submit" class="popup__button-save">Сохранить</button>
         </form>
-        <button type="button" class="popup__button-close" aria-label="Закрыть"></button>
+        <button type="button" class="popup__button-close popup__button-close_profile" aria-label="Закрыть"></button>
       </div>
     </div>
+
+    <div class="popup popup_place">
+      <div class="popup__container">
+        <form class="popup__form popup__form_place" name="editPlaceForm">
+          <h3 class="popup__tittle">Новое место</h3>
+          <input class="popup__item popup__item_input_place" type="text" name="place" placeholder="Название">
+          <input class="popup__item popup__item_input_link" type="text" name="link" placeholder="Ссылка на картинку">
+          <button type="submit" class="popup__button-save">Сохранить</button>
+        </form>
+        <button type="button" class="popup__button-close popup__button-close_place" aria-label="Закрыть"></button>
+      </div>
+    </div>
+
+    <div class="popup popup_image">
+      <div class="popup__content">
+        <img class="popup__image" alt="фотография">
+        <p class="popup__subtitle"></p>
+        <button type="button" class="popup__button-close popup__button-close_image" aria-label="Закрыть"></button>
+      </div>
+    </div>
+
+    <template class="element_template">
+      <div class="element">
+        <button type="button" class="element__trash" aria-label="Удалить"></button>
+        <img class="element__image" alt="фотография">
+        <div class="element__info">
+          <h2 class="element__tittle"></h2>
+          <button type="button" class="element__heart element__heart_unliked" aria-label="Оценить"></button>
+        </div>
+      </div>
+    </template>
     
     <script src="./scripts/script.js"></script>
 
