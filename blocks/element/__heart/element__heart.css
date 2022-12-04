@@ -13,11 +13,3 @@
 .element__heart:hover {
   opacity: 0.5;
 }
-
-.element__heart_liked {
-  background-image: url(../../../images/element-black-heart.svg);
-}
-
-.element__heart_unliked {
-  background-image: url(../../../images/element-heart.svg);
-}

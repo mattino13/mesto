@@ -111,7 +111,6 @@ function openImagePopup(link, text) {
 //функция показывает переданный попап
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  //popup.classList.add('popup_opened2');
 }
 
 function closeProfilePopup() {
