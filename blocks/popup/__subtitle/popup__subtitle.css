@@ -1,7 +1,12 @@
 .popup__subtitle {
+  max-width: 75vw;
   font-size: 12px;
   line-height: 0.8;
+  font-weight: 400;
   color: #FFFFFF;
   margin: 0;
   padding-top: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
