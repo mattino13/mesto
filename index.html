@@ -39,8 +39,8 @@
       <div class="popup__container">
         <form class="popup__form popup__form_profile" name="editProfileForm">
           <h3 class="popup__tittle">Редактировать профиль</h3>
-          <input class="popup__item popup__item_input_name" type="text" name="name" placeholder="Жак-Ив Кусто">
-          <input class="popup__item popup__item_input_job" type="text" name="job" placeholder="Исследователь океана">
+          <input class="popup__item popup__item_input_name" type="text" name="name" placeholder="Имя">
+          <input class="popup__item popup__item_input_job" type="text" name="job" placeholder="О себе">
           <button type="submit" class="popup__button-save">Сохранить</button>
         </form>
         <button type="button" class="popup__button-close popup__button-close_profile" aria-label="Закрыть"></button>
@@ -73,11 +73,12 @@
         <img class="element__image" alt="фотография">
         <div class="element__info">
           <h2 class="element__tittle"></h2>
-          <button type="button" class="element__heart element__heart_unliked" aria-label="Оценить"></button>
+          <button type="button" class="element__heart" aria-label="Оценить"></button>
         </div>
       </div>
     </template>
-    
+
+    <script src="./scripts/cards.js"></script>
     <script src="./scripts/script.js"></script>
 
   </body>
