@@ -10,3 +10,6 @@
   font-size: 14px;
   line-height: 0.8;
 }
+.popup__item_invalid {
+  border-bottom: 1px solid red;
+}

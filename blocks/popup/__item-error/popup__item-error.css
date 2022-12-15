@@ -1,0 +1,8 @@
+.popup__item-error {
+  position: relative;
+  bottom: 30px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 0.8;
+  color: red;
+}

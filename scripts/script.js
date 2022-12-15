@@ -12,6 +12,8 @@ const formElementProfile = document.querySelector('.popup__form_profile');
 const nameInput = formElementProfile.querySelector('.popup__item_input_name');
 const jobInput = formElementProfile.querySelector('.popup__item_input_job');
 
+const buttonSaveProfile = formElementProfile.querySelector('.popup__button-save_profile');
+
 // Элементы, в которые должны быть вставлены значения полей
 const profileTittle = document.querySelector('.profile__tittle');
 const profileSubtitle = document.querySelector('.profile__subtitle');
@@ -22,6 +24,8 @@ const formElementPlace = document.querySelector('.popup__form_place');
 // Поля формы Нового места
 const placeInput = formElementPlace.querySelector('.popup__item_input_place');
 const linkInput = formElementPlace.querySelector('.popup__item_input_link');
+
+const buttonSavePlace = formElementPlace.querySelector('.popup__button-save_place');
 
 // Элементы попапа Изображения
 const imagePreview = document.querySelector('.popup__image');
@@ -43,6 +47,11 @@ const closePlacePopupButton = document.querySelector('.popup__button-close_place
 
 const closeImagePopupButton = document.querySelector('.popup__button-close_image');
 
+const documentBody = document.querySelector('.page');
+
+const popupOverlays = [... document.querySelectorAll('.popup')];
+
+
 /////////////////////////
 // Функции
 
@@ -50,6 +59,11 @@ function openProfilePopup() {
   //инициализация полей ввода
   nameInput.value = profileTittle.textContent;
   jobInput.value = profileSubtitle.textContent;
+  validateInput(nameInput, validationConfig);
+  validateInput(jobInput, validationConfig);
+
+  //инициализация кнопки сохранения
+  validateButton(buttonSaveProfile, validationConfig);
   
   openPopup(profilePopup);
 }
@@ -58,6 +72,11 @@ function openPlacePopup() {
   //очистка полей ввода
   placeInput.value = '';
   linkInput.value = '';
+  validateInput(placeInput, validationConfig, 1);
+  validateInput(linkInput, validationConfig, 1);
+
+  //инициализация кнопки сохранения
+  validateButton(buttonSavePlace, validationConfig);
 
   openPopup(placePopup);
 }
@@ -160,7 +179,6 @@ function renderCard(item) {
   elementContainer.prepend(createCard(item));
 }
 
-
 // Подключаем слушателей событий на открытия и закрытия попапов
 openProfilePopupButton.addEventListener('click', openProfilePopup);
 openPlacePopupButton.addEventListener('click', openPlacePopup);
@@ -174,8 +192,8 @@ formElementProfile.addEventListener('submit', handleFormProfileSubmit);
 
 // Прикрепляем обработчик к форме Нового места:
 // он будет следить за событием “submit” - «отправка»
-formElementPlace.addEventListener('submit', handleFormPlaceSubmit); 
-
-
+formElementPlace.addEventListener('submit', handleFormPlaceSubmit);
 
 initCardsOnStartup();
+
+enableValidation(validationConfig); 

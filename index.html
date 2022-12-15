@@ -36,31 +36,49 @@
     </footer>
 
     <div class="popup popup_profile">
-      <div class="popup__container">
+      <div class="popup__container popup_overlay">
         <form class="popup__form popup__form_profile" name="editProfileForm">
           <h3 class="popup__tittle">Редактировать профиль</h3>
-          <input class="popup__item popup__item_input_name" type="text" name="name" placeholder="Имя">
-          <input class="popup__item popup__item_input_job" type="text" name="job" placeholder="О себе">
-          <button type="submit" class="popup__button-save">Сохранить</button>
+
+          <input id="name" class="popup__item popup__item_input_name" type="text" name="name" 
+                 minlength="2" maxlength="40" required placeholder="Имя">
+          <span id="name-error" class="popup__item-error">Вы пропустили это поле.</span>
+
+          <input id="job" class="popup__item popup__item_input_job" type="text" name="job" 
+                 minlength="2" maxlength="200" required placeholder="О себе">
+          <span id="job-error" class="popup__item-error">Вы пропустили это поле.</span>
+
+          <button type="submit" class="popup__button-save popup__button-save_profile popup__button_disabled">Сохранить</button>
+          
+
         </form>
         <button type="button" class="popup__button-close popup__button-close_profile" aria-label="Закрыть"></button>
       </div>
     </div>
 
     <div class="popup popup_place">
-      <div class="popup__container">
+      <div class="popup__container popup_overlay">
         <form class="popup__form popup__form_place" name="editPlaceForm">
           <h3 class="popup__tittle">Новое место</h3>
-          <input class="popup__item popup__item_input_place" type="text" name="place" placeholder="Название">
-          <input class="popup__item popup__item_input_link" type="text" name="link" placeholder="Ссылка на картинку">
-          <button type="submit" class="popup__button-save">Сохранить</button>
+
+          <input id="place" class="popup__item popup__item_input_place" type="text" name="place" 
+                 minlength="2" maxlength="30" required placeholder="Название">
+          <span id="place-error" class="popup__item-error">Вы пропустили это поле.</span>
+
+          <input id="link" class="popup__item popup__item_input_link" type="url" name="link" 
+                 minlength="2" required placeholder="Ссылка на картинку">
+          <span id="link-error" class="popup__item-error">Вы пропустили это поле.</span>
+
+          <button type="submit" class="popup__button-save popup__button-save_place popup__button_disabled">Сохранить</button>
+          
+
         </form>
         <button type="button" class="popup__button-close popup__button-close_place" aria-label="Закрыть"></button>
       </div>
     </div>
 
     <div class="popup popup_image">
-      <div class="popup__content">
+      <div class="popup__content popup_overlay">
         <img class="popup__image" src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg" alt="фотография">
         <p class="popup__subtitle"></p>
         <button type="button" class="popup__button-close popup__button-close_image" aria-label="Закрыть"></button>
@@ -79,6 +97,7 @@
     </template>
 
     <script src="./scripts/cards.js"></script>
+    <script src="./scripts/validate.js"></script>
     <script src="./scripts/script.js"></script>
 
   </body>
