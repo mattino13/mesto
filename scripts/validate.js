@@ -2,10 +2,10 @@ const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__item', 
   submitButtonSelector: '.popup__button-save', 
-  inactiveButtonClass: 'popup__button_disabled', 
+  inactiveButtonClass: 'popup__button-save_disabled', 
   inputErrorClass: 'popup__item_invalid',  
   errorClass: 'popup__item-error',
-  popupOverlayClass: '.popup_overlay'
+  popupOverlayClass: '.popup__overlay'
 };
 
 // Установка состояния кнопок на ошибки валидации
