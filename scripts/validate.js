@@ -4,74 +4,84 @@ const validationConfig = {
   submitButtonSelector: '.popup__button-save', 
   inactiveButtonClass: 'popup__button-save_disabled', 
   inputErrorClass: 'popup__item_invalid',  
-  errorClass: 'popup__item-error',
-  popupOverlayClass: '.popup__overlay'
+  errorClass: 'popup__item-error'
 };
 
-// Установка состояния кнопок на ошибки валидации
-function validateButton(input, config) {
-  //находим по input соответствующую ему форму и кнопку
-  const form = input.closest(config.formSelector);
-  const button = form.querySelector(config.submitButtonSelector);
+function findSpanElementByInputId(form, inputId) {
+  return form.querySelector(`#${inputId}-error`);
+}
 
-  const isFormValid = [... form.elements].every(input2 => input2.validity.valid);
+function hideInputError(form, input, config) {
+  const spanError = findSpanElementByInputId(form, input.id);
+  
+  spanError.classList.remove(config.errorClass);
+  spanError.textContent = '';
+  input.classList.remove(config.inputErrorClass);
+}
 
-  if (isFormValid) {
-    button.classList.remove(config.inactiveButtonClass);
-  } else {
-    button.classList.add(config.inactiveButtonClass); 
-  }
+function showInputError(form, input, config) {
+  const spanError = findSpanElementByInputId(form, input.id);
+
+  spanError.classList.add(config.errorClass);
+  spanError.textContent = input.validationMessage;
+  input.classList.add(config.inputErrorClass);
 }
 
 // Валидируем инпут
-function validateInput(input, config, hideValidationError = 0) {
-  const spanError = document.querySelector(`#${input.id}-error`);
-  
-    if (input.validity.valid || hideValidationError) {
-      spanError.classList.remove(config.errorClass);
-      spanError.textContent = '';
-      input.classList.remove(config.inputErrorClass);
-    } else {
-      spanError.classList.add(config.errorClass);
-      spanError.textContent = input.validationMessage;
-      input.classList.add(config.inputErrorClass);
-    }
+function validateInput(form, input, config) {
+  if (input.validity.valid) {
+    hideInputError(form, input, config);
+  } else {
+    showInputError(form, input, config);
+  }
 }
 
-// Поиск открытого попапа
-function findOpenedPopup() {
-  return document.querySelector('.popup_opened');
+function hasInvalidInput(inputList) {
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid;
+  })
+}; 
+
+function enableButtonState(button, config) {
+  button.classList.remove(config.inactiveButtonClass);
+  button.disabled = '';
+};
+
+function disableButtonState(button, config) {
+  button.classList.add(config.inactiveButtonClass);
+  button.disabled = 'disabled';
 }
+
+// Обработка состояния кнопки submit
+function toggleButtonState (inputList, button, config) {
+  // Если есть хотя бы один невалидный инпут
+  if (hasInvalidInput(inputList)) {
+    disableButtonState(button, config);
+  } else {
+    enableButtonState(button, config);
+  }
+}; 
+
+function setupFormListeners(formElement, config) {
+  // Находим все поля внутри формы
+  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+
+  // Найдём в форме кнопку submit
+  const button = formElement.querySelector(config.submitButtonSelector);
+
+  // Обойдём все элементы полученной коллекции
+  inputList.forEach((input) => {
+    // каждому полю добавим обработчик события input
+    input.addEventListener('input', () => {
+      validateInput(formElement, input, config); 
+      toggleButtonState(inputList, button, config);
+    });
+  });
+}; 
 
 function enableValidation(config) {
-  // Массив всех инпутов
-  const inputs = [... document.querySelectorAll(config.inputSelector)];
+  //Массив всех форм
+  const forms = [... document.querySelectorAll(config.formSelector)];
 
-  // Обработчики валидации инпутов
-  inputs.forEach(input => {
-    input.addEventListener('input', () => { 
-      validateInput(input, config); 
-      validateButton(input, config);
-    });
-  } );
-
-  // Обработчики закрытия попапа нажатием на Esc
-  documentBody.addEventListener('keyup', (evt) => {
-    const openedPopup = findOpenedPopup();
-    
-    if ((evt.key === 'Escape') && openedPopup) {
-        closePopup(openedPopup);
-      }
-  });
-
-  // Обработчики закрытия попапа кликом на оверлей
-  popupOverlays.forEach(overlay => {
-    overlay.addEventListener('click', (evt) => { 
-      const openedPopup = findOpenedPopup();
-
-    if (!evt.target.closest(config.popupOverlayClass) && openedPopup) {
-      closePopup(openedPopup);
-    }
-    });
-  });
+  forms.forEach((form) => setupFormListeners(form, config));
 }

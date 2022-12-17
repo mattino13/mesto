@@ -37,19 +37,19 @@ const elementContainer = document.querySelector('.elements');
 const elementTemplate = document.querySelector('.element_template').content;
 
 // Переменные открытия и закрытия попапов
-const openProfilePopupButton = document.querySelector('.profile__edit-button');
+const profilePopupOpenButton = document.querySelector('.profile__edit-button');
 
-const openPlacePopupButton = document.querySelector('.profile__add-button');
+const placePopupOpenButton = document.querySelector('.profile__add-button');
 
-const closeProfilePopupButton = document.querySelector('.popup__button-close_profile');
+const profilePopupCloseButton = document.querySelector('.popup__button-close_profile');
 
-const closePlacePopupButton = document.querySelector('.popup__button-close_place');
+const placePopupCloseButton = document.querySelector('.popup__button-close_place');
 
-const closeImagePopupButton = document.querySelector('.popup__button-close_image');
+const imagePopupCloseButton = document.querySelector('.popup__button-close_image');
 
 const documentBody = document.querySelector('.page');
 
-const popupOverlays = [... document.querySelectorAll('.popup')];
+const allPopups = [... document.querySelectorAll('.popup')];
 
 
 /////////////////////////
@@ -59,12 +59,16 @@ function openProfilePopup() {
   //инициализация полей ввода
   nameInput.value = profileTittle.textContent;
   jobInput.value = profileSubtitle.textContent;
-  validateInput(nameInput, validationConfig);
-  validateInput(jobInput, validationConfig);
 
-  //инициализация кнопки сохранения
-  validateButton(buttonSaveProfile, validationConfig);
-  
+  //инициализация валидности инпутов при показе попапа 
+  //(иначе в некоторых случаях валидность инпутов не соответствует значениям)
+  validateInput(formElementProfile, nameInput, validationConfig);
+  validateInput(formElementProfile, jobInput, validationConfig);
+
+  //инициализация состояния кнопки "сохранить" при показе попапа 
+  //(иначе в некоторых случаях состояние кнопки не соответствует полям ввода)
+  toggleButtonState ([nameInput, jobInput], buttonSaveProfile, validationConfig);
+
   openPopup(profilePopup);
 }
 
@@ -72,27 +76,41 @@ function openPlacePopup() {
   //очистка полей ввода
   placeInput.value = '';
   linkInput.value = '';
-  validateInput(placeInput, validationConfig, 1);
-  validateInput(linkInput, validationConfig, 1);
 
-  //инициализация кнопки сохранения
-  validateButton(buttonSavePlace, validationConfig);
+  //инициализация валидности инпутов при показе попапа 
+  //(иначе в некоторых случаях валидность инпутов не соответствует значениям)
+  hideInputError(formElementPlace, placeInput, validationConfig)
+  hideInputError(formElementPlace, linkInput, validationConfig);
+
+  //инициализация состояния кнопки "сохранить" при показе попапа 
+  //(иначе в некоторых случаях состояние кнопки не соответствует полям ввода)
+  toggleButtonState ([placeInput, linkInput], buttonSavePlace, validationConfig);
 
   openPopup(placePopup);
 }
 
-function openImagePopup(link, text) {
+function openImagePopup(cardInfo) {
   //инициализация элементов попата Изображения
-  imagePreview.src = link;
-  imagePreview.alt = text;
-  subtitlePreview.textContent = text;
+  imagePreview.src = cardInfo.link;
+  imagePreview.alt = cardInfo.name;
+  subtitlePreview.textContent = cardInfo.name;
 
   openPopup(imagePopup);
 }
 
+ // Обработчики закрытия попапа нажатием на Esc
+ function handleEscOnPopup(evt) {
+  //ищем открытый попап
+  const openedPopup = document.querySelector('.popup_opened'); 
+  if (evt.key === 'Escape') {
+      closePopup(openedPopup);
+    }
+};
+
 //функция показывает переданный попап
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  document.addEventListener('keyup', handleEscOnPopup);
 }
 
 function closeProfilePopup() {
@@ -110,6 +128,7 @@ function closeImagePopup() {
 //функция закрывает переданный попап
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  document.removeEventListener('keyup', handleEscOnPopup);
 }
 
 // Обработчик «отправки» формы профиля, хотя пока
@@ -157,19 +176,19 @@ function createCard(item) {
 
   // Лайк и его слушатель событий
   const heart = newPlaceElement.querySelector('.element__heart');
-  heart.addEventListener('click', evt=>{
+  heart.addEventListener('click', evt => {
     evt.target.classList.toggle('element__heart_liked');
   });
 
   // Корзина и ее слушатель событий
   const trash = newPlaceElement.querySelector('.element__trash');
-  trash.addEventListener('click', evt=>{
+  trash.addEventListener('click', evt => {
     evt.target.closest('.element').remove();
   });
 
   // Слушатель событий карточек
-  image.addEventListener('click',evt=>{
-    openImagePopup(evt.target.src, evt.target.closest('.element').querySelector('.element__tittle').textContent);
+  image.addEventListener('click', () => {
+    openImagePopup(item);
   });
 
   return newPlaceElement;
@@ -180,19 +199,29 @@ function renderCard(item) {
 }
 
 // Подключаем слушателей событий на открытия и закрытия попапов
-openProfilePopupButton.addEventListener('click', openProfilePopup);
-openPlacePopupButton.addEventListener('click', openPlacePopup);
-closeProfilePopupButton.addEventListener('click', closeProfilePopup);
-closePlacePopupButton.addEventListener('click', closePlacePopup);
-closeImagePopupButton.addEventListener('click', closeImagePopup);
+profilePopupOpenButton.addEventListener('click', openProfilePopup);
+placePopupOpenButton.addEventListener('click', openPlacePopup);
+profilePopupCloseButton.addEventListener('click', closeProfilePopup);
+placePopupCloseButton.addEventListener('click', closePlacePopup);
+imagePopupCloseButton.addEventListener('click', closeImagePopup);
 
-// Прикрепляем обработчик к форме профиля:
+// Подключаем обработчик к форме профиля:
 // он будет следить за событием “submit” - «отправка»
 formElementProfile.addEventListener('submit', handleFormProfileSubmit); 
 
-// Прикрепляем обработчик к форме Нового места:
+// Подключаем обработчик к форме Нового места:
 // он будет следить за событием “submit” - «отправка»
 formElementPlace.addEventListener('submit', handleFormPlaceSubmit);
+
+// Подключаем обработчики закрытия попапов кликом на оверлей
+allPopups.forEach(popup => {
+  popup.addEventListener('click', (evt) => { 
+                          
+  if (!evt.target.closest('.popup__overlay')) {
+    closePopup(popup);
+  }
+  });
+});
 
 initCardsOnStartup();
 

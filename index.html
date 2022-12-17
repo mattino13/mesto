@@ -37,20 +37,19 @@
 
     <div class="popup popup_profile">
       <div class="popup__container popup__overlay">
-        <form class="popup__form popup__form_profile" name="editProfileForm">
+        <form class="popup__form popup__form_profile" name="editProfileForm" novalidate>
           <h3 class="popup__tittle">Редактировать профиль</h3>
 
           <input id="name" class="popup__item popup__item_input_name" type="text" name="name" 
-                 minlength="2" maxlength="40" required placeholder="Имя">
-          <span id="name-error" class="popup__item-error">Вы пропустили это поле.</span>
-
+                  minlength="2" maxlength="40" required placeholder="Имя">
+          <span id="name-error" class="popup__item-normal"></span>
+        
           <input id="job" class="popup__item popup__item_input_job" type="text" name="job" 
-                 minlength="2" maxlength="200" required placeholder="О себе">
-          <span id="job-error" class="popup__item-error">Вы пропустили это поле.</span>
+                  minlength="2" maxlength="200" required placeholder="О себе">
+          <span id="job-error" class="popup__item-normal"></span>
 
-          <button type="submit" class="popup__button-save popup__button-save_profile popup__button-save_disabled">Сохранить</button>
+          <button type="submit" class="popup__button-save popup__button-save_profile">Сохранить</button>
           
-
         </form>
         <button type="button" class="popup__button-close popup__button-close_profile" aria-label="Закрыть"></button>
       </div>
@@ -58,20 +57,19 @@
 
     <div class="popup popup_place">
       <div class="popup__container popup__overlay">
-        <form class="popup__form popup__form_place" name="editPlaceForm">
+        <form class="popup__form popup__form_place" name="editPlaceForm" novalidate>
           <h3 class="popup__tittle">Новое место</h3>
-
+          
           <input id="place" class="popup__item popup__item_input_place" type="text" name="place" 
                  minlength="2" maxlength="30" required placeholder="Название">
-          <span id="place-error" class="popup__item-error">Вы пропустили это поле.</span>
+          <span id="place-error" class="popup__item-normal"></span>
 
           <input id="link" class="popup__item popup__item_input_link" type="url" name="link" 
                  minlength="2" required placeholder="Ссылка на картинку">
-          <span id="link-error" class="popup__item-error">Вы пропустили это поле.</span>
+          <span id="link-error" class="popup__item-normal"></span>
 
           <button type="submit" class="popup__button-save popup__button-save_place popup__button-save_disabled">Сохранить</button>
           
-
         </form>
         <button type="button" class="popup__button-close popup__button-close_place" aria-label="Закрыть"></button>
       </div>
