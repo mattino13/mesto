@@ -101,8 +101,8 @@ function openImagePopup(cardInfo) {
  // Обработчики закрытия попапа нажатием на Esc
  function handleEscOnPopup(evt) {
   //ищем открытый попап
-  const openedPopup = document.querySelector('.popup_opened'); 
   if (evt.key === 'Escape') {
+      const openedPopup = document.querySelector('.popup_opened'); 
       closePopup(openedPopup);
     }
 };

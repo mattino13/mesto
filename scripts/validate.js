@@ -44,12 +44,12 @@ function hasInvalidInput(inputList) {
 
 function enableButtonState(button, config) {
   button.classList.remove(config.inactiveButtonClass);
-  button.disabled = '';
+  button.disabled = false;
 };
 
 function disableButtonState(button, config) {
   button.classList.add(config.inactiveButtonClass);
-  button.disabled = 'disabled';
+  button.disabled = true;
 }
 
 // Обработка состояния кнопки submit
