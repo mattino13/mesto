@@ -1,9 +1,49 @@
+import { Card } from './Card.js';
+import { FormValidator } from './FormValidator.js';
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__item', 
+  submitButtonSelector: '.popup__button-save', 
+  inactiveButtonClass: 'popup__button-save_disabled', 
+  inputErrorClass: 'popup__item_invalid',  
+  errorClass: 'popup__item-error'
+};
+
+//массив карточек
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
+
 // Попап профиля
 const profilePopup = document.querySelector('.popup_profile');
 // Попап Нового места
 const placePopup = document.querySelector('.popup_place');
 // Попап Изображения
-const imagePopup = document.querySelector('.popup_image');
+export const imagePopup = document.querySelector('.popup_image');
 
 // Форма профиля
 const formElementProfile = document.querySelector('.popup__form_profile');
@@ -27,12 +67,6 @@ const linkInput = formElementPlace.querySelector('.popup__item_input_link');
 
 const buttonSavePlace = formElementPlace.querySelector('.popup__button-save_place');
 
-// Элементы попапа Изображения
-const imagePreview = document.querySelector('.popup__image');
-const subtitlePreview = document.querySelector('.popup__subtitle');
-
-// Контейнер, где хранятся карточки
-const elementContainer = document.querySelector('.elements');
 // Шаблон карточки Нового места
 const elementTemplate = document.querySelector('.element_template').content;
 
@@ -60,15 +94,6 @@ function openProfilePopup() {
   nameInput.value = profileTittle.textContent;
   jobInput.value = profileSubtitle.textContent;
 
-  //инициализация валидности инпутов при показе попапа 
-  //(иначе в некоторых случаях валидность инпутов не соответствует значениям)
-  validateInput(formElementProfile, nameInput, validationConfig);
-  validateInput(formElementProfile, jobInput, validationConfig);
-
-  //инициализация состояния кнопки "сохранить" при показе попапа 
-  //(иначе в некоторых случаях состояние кнопки не соответствует полям ввода)
-  toggleButtonState ([nameInput, jobInput], buttonSaveProfile, validationConfig);
-
   openPopup(profilePopup);
 }
 
@@ -77,25 +102,7 @@ function openPlacePopup() {
   placeInput.value = '';
   linkInput.value = '';
 
-  //инициализация валидности инпутов при показе попапа 
-  //(иначе в некоторых случаях валидность инпутов не соответствует значениям)
-  hideInputError(formElementPlace, placeInput, validationConfig)
-  hideInputError(formElementPlace, linkInput, validationConfig);
-
-  //инициализация состояния кнопки "сохранить" при показе попапа 
-  //(иначе в некоторых случаях состояние кнопки не соответствует полям ввода)
-  toggleButtonState ([placeInput, linkInput], buttonSavePlace, validationConfig);
-
   openPopup(placePopup);
-}
-
-function openImagePopup(cardInfo) {
-  //инициализация элементов попата Изображения
-  imagePreview.src = cardInfo.link;
-  imagePreview.alt = cardInfo.name;
-  subtitlePreview.textContent = cardInfo.name;
-
-  openPopup(imagePopup);
 }
 
  // Обработчики закрытия попапа нажатием на Esc
@@ -108,7 +115,7 @@ function openImagePopup(cardInfo) {
 };
 
 //функция показывает переданный попап
-function openPopup(popup) {
+export function openPopup(popup) {
   popup.classList.add('popup_opened');
   document.addEventListener('keyup', handleEscOnPopup);
 }
@@ -148,54 +155,20 @@ function handleFormProfileSubmit (evt) {
 function handleFormPlaceSubmit (evt) {
   evt.preventDefault(); 
 
-  // Сохранение переменной для вызова функции renderCard
-  const newItem = new Object;
-  newItem.name = placeInput.value;
-  newItem.link = linkInput.value;
-
-  renderCard(newItem);
+  // Создаем новую карточку
+  const newCard = new Card(placeInput.value, linkInput.value, '.element_template');
+  newCard.renderCard();
 
   closePlacePopup ();
 }
 
 // добавляем карточки при загрузки страницы
+
 function initCardsOnStartup() {
   initialCards.reverse().forEach((item) => {
-    renderCard(item);
+    const placeCard = new Card(item.name, item.link, '.element_template');
+    placeCard.renderCard();
   });
-}
-
-// создаем карточку
-function createCard(item) {
-  const newPlaceElement = elementTemplate.cloneNode(true);
-  const header = newPlaceElement.querySelector('.element__tittle');
-  header.textContent = item.name;
-  const image = newPlaceElement.querySelector('.element__image');
-  image.src = item.link;
-  image.alt = item.name;
-
-  // Лайк и его слушатель событий
-  const heart = newPlaceElement.querySelector('.element__heart');
-  heart.addEventListener('click', evt => {
-    evt.target.classList.toggle('element__heart_liked');
-  });
-
-  // Корзина и ее слушатель событий
-  const trash = newPlaceElement.querySelector('.element__trash');
-  trash.addEventListener('click', evt => {
-    evt.target.closest('.element').remove();
-  });
-
-  // Слушатель событий карточек
-  image.addEventListener('click', () => {
-    openImagePopup(item);
-  });
-
-  return newPlaceElement;
-}
-
-function renderCard(item) {
-  elementContainer.prepend(createCard(item));
 }
 
 // Подключаем слушателей событий на открытия и закрытия попапов
@@ -223,6 +196,13 @@ allPopups.forEach(popup => {
   });
 });
 
-initCardsOnStartup();
+// инициализация начальных карточек
+initCardsOnStartup(); 
 
-enableValidation(validationConfig); 
+ // Подключение форм к валидатору форм
+ const forms = [... document.querySelectorAll(validationConfig.formSelector)];
+
+ forms.forEach((form) => {
+   const formValidator = new FormValidator(validationConfig, form);
+   formValidator.enableValidation();
+ });
