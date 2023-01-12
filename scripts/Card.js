@@ -1,11 +1,4 @@
-import { openPopup, imagePopup } from './index.js';
-
-// Контейнер, где хранятся карточки
-const elementContainer = document.querySelector('.elements');
-
-// Элементы попапа Изображения
-const imagePreview = document.querySelector('.popup__image');
-const subtitlePreview = document.querySelector('.popup__subtitle');
+import { openPopup, imagePopup, imagePreview, subtitlePreview } from './index.js';
 
 export class Card {
   constructor(name, imageUrl, templateSelector) {
@@ -20,8 +13,9 @@ export class Card {
   }
 
   // обработчик клика на корзину
-  _handleTrash = (event) => {
-    event.target.closest('.element').remove();
+  _handleTrash = () => {
+    this._newPlaceElement.remove();
+    this._newPlaceElement = null;
   }
 
   // обработчик клика на изображение карточки
@@ -29,41 +23,46 @@ export class Card {
     //инициализация элементов попапа Изображения
     imagePreview.src = this._imageUrl;
     imagePreview.alt = this._name;
+
     subtitlePreview.textContent = this._name;
   
     openPopup(imagePopup);
   }
 
-  // создаем карточку
-  _createCard() {
-    const newPlaceElement = document
-      .querySelector(this._templateSelector)
-      .content
-      .cloneNode(true);
-
-    newPlaceElement
-      .querySelector('.element__tittle')
-      .textContent = this._name;
-
-    const image = newPlaceElement.querySelector('.element__image');
-    image.src = this._imageUrl;
-    image.alt = this._name;
-
+  _setupEventListeners() {
     // Лайк и его слушатель событий
-    const heart = newPlaceElement.querySelector('.element__heart');
+    const heart = this._newPlaceElement.querySelector('.element__heart');
     heart.addEventListener('click', this._handleLike);
 
     // Корзина и ее слушатель событий
-    const trash = newPlaceElement.querySelector('.element__trash');
+    const trash = this._newPlaceElement.querySelector('.element__trash');
     trash.addEventListener('click', this._handleTrash);
 
     // Слушатель событий карточек
-    image.addEventListener('click', this._openImagePopup);
-
-    return newPlaceElement;
+    this._image.addEventListener('click', this._openImagePopup);
   }
 
-  renderCard() {
-    elementContainer.prepend(this._createCard());
-  };
+  // возвращаем новую карточку из шаблона
+  _createCardFromTemplate() {
+    this._newPlaceElement = document
+      .querySelector(this._templateSelector)
+      .content
+      .children[0]
+      .cloneNode(true);
+
+    this._newPlaceElement.querySelector('.element__tittle').textContent = this._name;
+
+    this._image = this._newPlaceElement.querySelector('.element__image');
+    this._image.src = this._imageUrl;
+    this._image.alt = this._name;
+  }
+
+  // создаем карточку
+  createCard() {
+    this._createCardFromTemplate();
+    this._setupEventListeners();
+
+    return this._newPlaceElement;
+  }
+
 }

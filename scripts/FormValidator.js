@@ -8,9 +8,9 @@ export class FormValidator {
   }
 
     // Валидируем инпут
-  _validateInput(input) {
+  validateInput(input) {
     if (input.validity.valid) {
-      this._hideInputError(input);
+      this.hideInputError(input);
     } else {
       this._showInputError(input);
     }
@@ -20,7 +20,7 @@ export class FormValidator {
     return this._formElement.querySelector(`#${inputId}-error`);
   }
 
-  _hideInputError(input) {
+  hideInputError(input) {
     const spanError = this._findSpanElementByInputId(input.id);
     
     spanError.classList.remove(this._formConfig.errorClass);
@@ -37,12 +37,12 @@ export class FormValidator {
   }
   
   // Обработка состояния кнопки submit
-  _toggleButtonState (button) {
+  toggleButtonState () {
     // Если есть хотя бы один невалидный инпут
     if (this._hasInvalidInput()) {
-      this._disableButtonState(button);
+      this._disableButtonState();
     } else {
-      this._enableButtonState(button);
+      this._enableButtonState();
     }
   }; 
 
@@ -52,29 +52,27 @@ export class FormValidator {
     })
   }; 
 
-  _disableButtonState(button) {
-    button.classList.add(this._formConfig.inactiveButtonClass);
-    button.disabled = true;
+  _disableButtonState() {
+    this._button.classList.add(this._formConfig.inactiveButtonClass);
+    this._button.disabled = true;
   }
 
-  _enableButtonState(button) {
-    button.classList.remove(this._formConfig.inactiveButtonClass);
-    button.disabled = false;
+  _enableButtonState() {
+    this._button.classList.remove(this._formConfig.inactiveButtonClass);
+    this._button.disabled = false;
   };
 
   enableValidation() {
     // Найдём в форме кнопку submit
-    const button = this._formElement.querySelector(this._formConfig.submitButtonSelector);
+    this._button = this._formElement.querySelector(this._formConfig.submitButtonSelector);
 
     // Обойдём все элементы полученной коллекции
     this._inputList.forEach((input) => {
       // каждому полю добавим обработчик события input
       input.addEventListener('input', () => {
-        this._validateInput(input); 
-        this._toggleButtonState(button);
+        this.validateInput(input); 
+        this.toggleButtonState();
       });
     });
   }
 }
-
-

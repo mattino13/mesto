@@ -38,6 +38,13 @@ const initialCards = [
   }
 ];
 
+// Контейнер, где хранятся карточки
+const elementContainer = document.querySelector('.elements');
+
+// Элементы попапа Изображения
+export const imagePreview = document.querySelector('.popup__image');
+export const subtitlePreview = document.querySelector('.popup__subtitle');
+
 // Попап профиля
 const profilePopup = document.querySelector('.popup_profile');
 // Попап Нового места
@@ -52,8 +59,6 @@ const formElementProfile = document.querySelector('.popup__form_profile');
 const nameInput = formElementProfile.querySelector('.popup__item_input_name');
 const jobInput = formElementProfile.querySelector('.popup__item_input_job');
 
-const buttonSaveProfile = formElementProfile.querySelector('.popup__button-save_profile');
-
 // Элементы, в которые должны быть вставлены значения полей
 const profileTittle = document.querySelector('.profile__tittle');
 const profileSubtitle = document.querySelector('.profile__subtitle');
@@ -64,11 +69,6 @@ const formElementPlace = document.querySelector('.popup__form_place');
 // Поля формы Нового места
 const placeInput = formElementPlace.querySelector('.popup__item_input_place');
 const linkInput = formElementPlace.querySelector('.popup__item_input_link');
-
-const buttonSavePlace = formElementPlace.querySelector('.popup__button-save_place');
-
-// Шаблон карточки Нового места
-const elementTemplate = document.querySelector('.element_template').content;
 
 // Переменные открытия и закрытия попапов
 const profilePopupOpenButton = document.querySelector('.profile__edit-button');
@@ -81,8 +81,6 @@ const placePopupCloseButton = document.querySelector('.popup__button-close_place
 
 const imagePopupCloseButton = document.querySelector('.popup__button-close_image');
 
-const documentBody = document.querySelector('.page');
-
 const allPopups = [... document.querySelectorAll('.popup')];
 
 
@@ -94,6 +92,15 @@ function openProfilePopup() {
   nameInput.value = profileTittle.textContent;
   jobInput.value = profileSubtitle.textContent;
 
+  //инициализация валидности инпутов при показе попапа 
+  //(иначе в некоторых случаях валидность инпутов не соответствует значениям)
+  formValidatorProfile.validateInput(nameInput);
+  formValidatorProfile.validateInput(jobInput);
+
+  //инициализация состояния кнопки "сохранить" при показе попапа 
+  //(иначе в некоторых случаях состояние кнопки не соответствует полям ввода)
+  formValidatorProfile.toggleButtonState();
+
   openPopup(profilePopup);
 }
 
@@ -101,6 +108,15 @@ function openPlacePopup() {
   //очистка полей ввода
   placeInput.value = '';
   linkInput.value = '';
+
+  //инициализация валидности инпутов при показе попапа 
+  //(иначе в некоторых случаях валидность инпутов не соответствует значениям)
+  formValidatorPlace.hideInputError(placeInput);
+  formValidatorPlace.hideInputError(linkInput);
+
+  //инициализация состояния кнопки "сохранить" при показе попапа 
+  //(иначе в некоторых случаях состояние кнопки не соответствует полям ввода)
+  formValidatorPlace.toggleButtonState();
 
   openPopup(placePopup);
 }
@@ -157,8 +173,8 @@ function handleFormPlaceSubmit (evt) {
 
   // Создаем новую карточку
   const newCard = new Card(placeInput.value, linkInput.value, '.element_template');
-  newCard.renderCard();
-
+  elementContainer.prepend(newCard.createCard());
+  
   closePlacePopup ();
 }
 
@@ -167,7 +183,7 @@ function handleFormPlaceSubmit (evt) {
 function initCardsOnStartup() {
   initialCards.reverse().forEach((item) => {
     const placeCard = new Card(item.name, item.link, '.element_template');
-    placeCard.renderCard();
+    elementContainer.prepend(placeCard.createCard());
   });
 }
 
@@ -200,9 +216,8 @@ allPopups.forEach(popup => {
 initCardsOnStartup(); 
 
  // Подключение форм к валидатору форм
- const forms = [... document.querySelectorAll(validationConfig.formSelector)];
+const formValidatorProfile = new FormValidator(validationConfig, formElementProfile);
+formValidatorProfile.enableValidation();
 
- forms.forEach((form) => {
-   const formValidator = new FormValidator(validationConfig, form);
-   formValidator.enableValidation();
- });
+const formValidatorPlace = new FormValidator(validationConfig, formElementPlace);
+formValidatorPlace.enableValidation();
