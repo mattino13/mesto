@@ -166,15 +166,20 @@ function handleFormProfileSubmit (evt) {
     closeProfilePopup ();
 }
 
+// Функция возвращает новый элемент карточки, созданный по имени и ссылке
+function createCardElement(name, link) {
+  const newCard = new Card(name, link, '.element_template');
+  return newCard.createCard();
+}
+
 // Обработчик «отправки» формы Нового места, хотя пока
 // она никуда отправляться не будет
 function handleFormPlaceSubmit (evt) {
   evt.preventDefault(); 
 
   // Создаем новую карточку
-  const newCard = new Card(placeInput.value, linkInput.value, '.element_template');
-  elementContainer.prepend(newCard.createCard());
-  
+  elementContainer.prepend(createCardElement(placeInput.value, linkInput.value));
+
   closePlacePopup ();
 }
 
@@ -182,8 +187,7 @@ function handleFormPlaceSubmit (evt) {
 
 function initCardsOnStartup() {
   initialCards.reverse().forEach((item) => {
-    const placeCard = new Card(item.name, item.link, '.element_template');
-    elementContainer.prepend(placeCard.createCard());
+    elementContainer.prepend(createCardElement(item.name, item.link));
   });
 }
 

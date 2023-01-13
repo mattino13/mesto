@@ -44,22 +44,24 @@ export class Card {
 
   // возвращаем новую карточку из шаблона
   _createCardFromTemplate() {
-    this._newPlaceElement = document
+    const newPlaceElement = document
       .querySelector(this._templateSelector)
       .content
-      .children[0]
+      .querySelector('.element')
       .cloneNode(true);
 
-    this._newPlaceElement.querySelector('.element__tittle').textContent = this._name;
-
-    this._image = this._newPlaceElement.querySelector('.element__image');
-    this._image.src = this._imageUrl;
-    this._image.alt = this._name;
+   return newPlaceElement;
   }
 
   // создаем карточку
   createCard() {
-    this._createCardFromTemplate();
+    this._newPlaceElement = this._createCardFromTemplate();
+
+    this._newPlaceElement.querySelector('.element__tittle').textContent = this._name;
+    this._image = this._newPlaceElement.querySelector('.element__image');
+    this._image.src = this._imageUrl;
+    this._image.alt = this._name;
+
     this._setupEventListeners();
 
     return this._newPlaceElement;
