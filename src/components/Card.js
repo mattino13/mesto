@@ -1,10 +1,11 @@
-import { openPopup, imagePopup, imagePreview, subtitlePreview } from './index.js';
-
 export class Card {
-  constructor(name, imageUrl, templateSelector) {
+  constructor(name, imageUrl, templateSelector, handleCardClick) {
     this._name = name;
     this._imageUrl = imageUrl;
     this._templateSelector = templateSelector;
+
+    // обработчик клика на изображение карточки
+    this._handleCardClick = handleCardClick;
   }
 
   // обработчик клика на сердечко
@@ -20,13 +21,7 @@ export class Card {
 
   // обработчик клика на изображение карточки
   _openImagePopup = () => {
-    //инициализация элементов попапа Изображения
-    imagePreview.src = this._imageUrl;
-    imagePreview.alt = this._name;
-
-    subtitlePreview.textContent = this._name;
-  
-    openPopup(imagePopup);
+    this._handleCardClick(this._name, this._imageUrl);
   }
 
   _setupEventListeners() {
@@ -39,7 +34,7 @@ export class Card {
     trash.addEventListener('click', this._handleTrash);
 
     // Слушатель событий карточек
-    this._image.addEventListener('click', this._openImagePopup);
+    this._image.addEventListener('click', this._openImagePopup.bind(this));
   }
 
   // возвращаем новую карточку из шаблона
