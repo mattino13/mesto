@@ -44,10 +44,6 @@ const initialCards = [
   }
 ];
 
-// Элементы попапа Изображения
-export const imagePreview = document.querySelector('.popup__image');
-export const subtitlePreview = document.querySelector('.popup__subtitle');
-
 // Форма профиля
 const formElementProfile = document.querySelector('.popup__form_profile');
 
@@ -82,8 +78,9 @@ formValidatorPlace.enableValidation();
 
 function openProfilePopup() {
   //инициализация полей ввода
-  nameInput.value = userInfo.getUserInfo().user;
-  jobInput.value = userInfo.getUserInfo().info;
+  const localUserInfo = userInfo.getUserInfo();
+  nameInput.value = localUserInfo.user;
+  jobInput.value = localUserInfo.info;
 
   //инициализация валидности инпутов при показе попапа 
   //(иначе в некоторых случаях валидность инпутов не соответствует значениям)
@@ -119,33 +116,31 @@ const cardClickHandler = (name, link) => {
   imagePopup.open(name, link);
 };
 
-// инициализация начальных карточек
-function generateCardsFromData(data) {
-  const section = new Section({
-    items: data.reverse(),
-    renderer: (item) => {
-      const card = new Card(item.name, item.link, '.element_template', cardClickHandler);
-      const cardElement = card.createCard();
-      section.addItem(cardElement);
-    }
-  }, '.elements');
-
-  section.renderItems();
-}
-
 function handleProfileSubmit(formValues) {
-  profileTittle.textContent = formValues.name;
-  profileSubtitle.textContent = formValues.job;
   userInfo.setUserInfo({user: formValues.name, info: formValues.job});
+
+  const localUserInfo = userInfo.getUserInfo();
+  profileTittle.textContent = localUserInfo.user;
+  profileSubtitle.textContent = localUserInfo.info;
+  
 }
 
 function handlePlaceSubmit(formValues) {
-  const cardData = [{name: formValues.place, link: formValues.link}];
-  generateCardsFromData(cardData);
+  const newCard = new Card(formValues.place, formValues.link, '.element_template', cardClickHandler);
+  section.addItem(newCard.createCard());
 }
 
 const popupProfile = new PopupWithForm('.popup_profile', handleProfileSubmit);
 const popupPlace = new PopupWithForm('.popup_place', handlePlaceSubmit);
+
+const section = new Section({
+  items: initialCards.reverse(),
+  renderer: (item) => {
+    const card = new Card(item.name, item.link, '.element_template', cardClickHandler);
+    const cardElement = card.createCard();
+    section.addItem(cardElement);
+  }
+}, '.elements');
 
 // Подключаем слушателей событий на открытия и закрытия попапов
 profilePopupOpenButton.addEventListener('click', openProfilePopup);
@@ -155,6 +150,6 @@ imagePopup.setEventListeners();
 popupPlace.setEventListeners();
 popupProfile.setEventListeners();
 
-generateCardsFromData(initialCards);
+section.renderItems();
 
 const userInfo = new UserInfo({userSelector:'.profile__tittle', infoSelector: '.profile__subtitle'});
