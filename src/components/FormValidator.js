@@ -8,9 +8,9 @@ export class FormValidator {
   }
 
     // Валидируем инпут
-  validateInput(input) {
+  _validateInput(input) {
     if (input.validity.valid) {
-      this.hideInputError(input);
+      this._hideInputError(input);
     } else {
       this._showInputError(input);
     }
@@ -20,7 +20,7 @@ export class FormValidator {
     return this._formElement.querySelector(`#${inputId}-error`);
   }
 
-  hideInputError(input) {
+  _hideInputError(input) {
     const spanError = this._findSpanElementByInputId(input.id);
     
     spanError.classList.remove(this._formConfig.errorClass);
@@ -37,7 +37,7 @@ export class FormValidator {
   }
   
   // Обработка состояния кнопки submit
-  toggleButtonState () {
+  _toggleButtonState () {
     // Если есть хотя бы один невалидный инпут
     if (this._hasInvalidInput()) {
       this._disableButtonState();
@@ -62,6 +62,14 @@ export class FormValidator {
     this._button.disabled = false;
   };
 
+  initFormOnShow() {
+    this._inputList.forEach( (item) => {
+      this._hideInputError(item);
+      });
+
+    this._disableButtonState();
+  }
+
   enableValidation() {
     // Найдём в форме кнопку submit
     this._button = this._formElement.querySelector(this._formConfig.submitButtonSelector);
@@ -70,8 +78,8 @@ export class FormValidator {
     this._inputList.forEach((input) => {
       // каждому полю добавим обработчик события input
       input.addEventListener('input', () => {
-        this.validateInput(input); 
-        this.toggleButtonState();
+        this._validateInput(input); 
+        this._toggleButtonState();
       });
     });
   }
