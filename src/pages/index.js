@@ -14,9 +14,7 @@ import { validationConfig, initialCards, formElementProfile,
 const section = new Section({
   items: initialCards.reverse(),
   renderer: (item) => {
-    const card = new Card(item.name, item.link, '.element_template', cardClickHandler);
-    const cardElement = card.createCard();
-    section.addItem(cardElement);
+    section.addItem(createNewCardElement(item.name, item.link));
   }
 }, '.elements');
 
@@ -64,9 +62,13 @@ function handleProfileSubmit(formValues) {
   profileSubtitle.textContent = localUserInfo.info;
 }
 
+function createNewCardElement(name, imageUrl) {
+  const newCard = new Card(name, imageUrl, '.element_template', cardClickHandler);
+  return newCard.createCard();
+}
+
 function handlePlaceSubmit(formValues) {
-  const newCard = new Card(formValues.place, formValues.link, '.element_template', cardClickHandler);
-  section.addItem(newCard.createCard());
+  section.addItem(createNewCardElement(formValues.place, formValues.link));
 }
 
 // Подключаем слушателей событий на открытия и закрытия попапов
