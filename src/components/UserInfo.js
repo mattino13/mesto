@@ -5,11 +5,17 @@ export class UserInfo {
   }
 
   getUserInfo() {
-    return {user: this._user, info: this._info};
+    return {user: this._user, info: this._info, avatar: this._avatar};
   }
 
-  setUserInfo({user, info}) {
+  getMyId() {
+    return this._myId;
+  }
+
+  setUserInfo({user, info, myId, avatar}) {
     this._user = user;
     this._info = info;
+    this._myId = myId;
+    this._avatar = avatar;
   }
 }

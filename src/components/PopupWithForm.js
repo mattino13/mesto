@@ -6,6 +6,7 @@ export class PopupWithForm extends Popup {
     this._formSubmitCallback = formSubmitCallback;
     this._form = this._popupElement.querySelector('.popup__form');
     this._inputArray = Array.from(this._form.querySelectorAll('.popup__item'));
+    this._buttonSave = this._form.querySelector('.popup__button-save');
   }
 
   _getInputValues() {
@@ -21,6 +22,10 @@ export class PopupWithForm extends Popup {
     evt.preventDefault();
     this._formSubmitCallback(this._getInputValues());
     this.close();
+  }
+
+  setSaveButtonText(text) {
+    this._buttonSave.textContent = text;
   }
 
   setEventListeners() {

@@ -12,19 +12,19 @@
 
     <header class="header">
       <img class="header__logo" src="<%=require('./images/header-logo.svg')%>" alt="Логотип Место">
-      <!--img class="header__logo" src="./images/header-logo.svg" alt="Логотип Место"-->
     </header>
 
     <main>
 
       <section class="profile">
         <div class="profile__content">
-          <img class="profile__avatar" src="<%=require('./images/profile-avatar.jpg')%>" alt="фото Кусто">
-          <!--img class="profile__avatar" src="./images/profile-avatar.jpg" alt="фото Кусто"-->
+          <div class="profile__avatar-icon"> 
+            <img class="profile__avatar"> 
+          </div>
           <div class="profile__info">
-            <h1 class="profile__tittle">Жак-Ив Кусто</h1>
+            <h1 class="profile__tittle"></h1>
             <button type="button" class="profile__edit-button" aria-label="Редактировать"></button>
-            <p class="profile__subtitle">Исследователь океана</p>
+            <p class="profile__subtitle"></p>
           </div>
         </div>
         <button type="button" class="profile__add-button" aria-label="Добавить"></button>
@@ -59,6 +59,22 @@
       </div>
     </div>
 
+    <div class="popup popup_avatar">
+      <div class="popup__container popup__container_avatar popup__overlay">
+        <form class="popup__form popup__form_avatar" name="editProfileForm" novalidate>
+          <h3 class="popup__tittle">Обновить аватар</h3>
+
+          <input id="link" class="popup__item popup__item_input_avatar" type="url" name="link" 
+                 minlength="2" required placeholder="Ссылка на картинку">
+          <span id="link-error" class="popup__item-normal"></span>
+
+          <button type="submit" class="popup__button-save popup__button-save_profile">Сохранить</button>
+          
+        </form>
+        <button type="button" class="popup__button-close popup__button-close_profile" aria-label="Закрыть"></button>
+      </div>
+    </div>
+
     <div class="popup popup_place">
       <div class="popup__container popup__overlay">
         <form class="popup__form popup__form_place" name="editPlaceForm" novalidate>
@@ -79,6 +95,18 @@
       </div>
     </div>
 
+    <div class="popup popup_trash">
+      <div class="popup__container popup__container_trash popup__overlay">
+        <form class="popup__form popup__form_trash" name="editProfileForm" novalidate>
+          <h3 class="popup__tittle popup__tittle_trash">Вы уверены?</h3>
+
+          <button type="submit" class="popup__button-yes">Да</button>
+          
+        </form>
+        <button type="button" class="popup__button-close popup__button-close_trash" aria-label="Закрыть"></button>
+      </div>
+    </div>
+
     <div class="popup popup_image">
       <div class="popup__content popup__overlay">
         <img class="popup__image" src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg" alt="фотография">
@@ -89,11 +117,14 @@
 
     <template class="element_template">
       <div class="element">
-        <button type="button" class="element__trash" aria-label="Удалить"></button>
+        <button type="button" class="element__trash element__trash_non" aria-label="Удалить"></button>
         <img class="element__image" alt="фотография">
         <div class="element__info">
           <h2 class="element__tittle"></h2>
-          <button type="button" class="element__heart" aria-label="Оценить"></button>
+          <div>
+            <button type="button" class="element__heart" aria-label="Оценить"></button>
+            <p class="element__counter">0</p>
+          </div>
         </div>
       </div>
     </template>
