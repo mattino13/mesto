@@ -19,7 +19,7 @@
       <section class="profile">
         <div class="profile__content">
           <div class="profile__avatar-icon"> 
-            <img class="profile__avatar"> 
+            <img class="profile__avatar" alt="Фото"> 
           </div>
           <div class="profile__info">
             <h1 class="profile__tittle"></h1>
@@ -64,9 +64,9 @@
         <form class="popup__form popup__form_avatar" name="editProfileForm" novalidate>
           <h3 class="popup__tittle">Обновить аватар</h3>
 
-          <input id="link" class="popup__item popup__item_input_avatar" type="url" name="link" 
+          <input id="avatar-link" class="popup__item popup__item_input_avatar" type="url" name="link" 
                  minlength="2" required placeholder="Ссылка на картинку">
-          <span id="link-error" class="popup__item-normal"></span>
+          <span id="avatar-link-error" class="popup__item-normal"></span>
 
           <button type="submit" class="popup__button-save popup__button-save_profile">Сохранить</button>
           
