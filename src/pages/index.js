@@ -13,7 +13,12 @@ import { validationConfig, formElementProfile, formElementAvatar,
 import { Api } from '../components/Api.js';
 
 // Данные пользователя
-const userInfo = new UserInfo({userSelector:'.profile__tittle', infoSelector: '.profile__subtitle'});
+const userInfo = new UserInfo(
+  {
+    userSelector: '.profile__tittle', 
+    infoSelector: '.profile__subtitle',
+    avatarSelector: '.profile__avatar'
+  });
 
 // Попапы
 const popupImage = new PopupWithImage('.popup_image');
@@ -61,14 +66,6 @@ const cardClickHandler = (name, link) => {
   popupImage.open(name, link);
 };
 
-function actualizeUserInfoElements() {
-  const userData = userInfo.getUserInfo();
-  profileAvatarImage.src = userData.avatar;
-  profileAvatarImage.alt = userData.user;
-  profileTittle.textContent = userData.user;
-  profileSubtitle.textContent = userData.info;
-}
-
 function setUserInfoFromResponse(response) {
   userInfo.setUserInfo(
     {
@@ -84,10 +81,12 @@ function setUserInfoFromResponse(response) {
 function handleProfileSubmit(formValues) {
   popupProfile.setSaveButtonText('Сохранение...');
   api.setUserInfo(formValues.name, formValues.job)
-    .then(result => {
-      setUserInfoFromResponse(result);
-      actualizeUserInfoElements();
-    })
+    .then(
+      result => {
+        popupProfile.close();
+        setUserInfoFromResponse(result);
+      }
+    )
     .catch((err) => console.log(err))
     .finally(() => popupProfile.setSaveButtonText('Сохранить'));
 }
@@ -97,6 +96,7 @@ function handlePlaceSubmit(formValues) {
   api.createCard(formValues.place, formValues.link)
     .then(
       res => {
+        popupPlace.close();
         section.addItem(createNewCardElement({...res, myId: userInfo.getMyId()}));
       }
     )
@@ -106,7 +106,12 @@ function handlePlaceSubmit(formValues) {
 
 function handleTrashSubmit() {
   api.deleteCard(popupTrash.currentCard._id)
-    .then(popupTrash.currentCard.removeCardElement())
+    .then(
+      () => {
+        popupTrash.close();
+        popupTrash.currentCard.removeCardElement();
+      }
+    )
     .catch((err) => console.log(err))
     .finally(() => { popupTrash.currentCard = undefined }); 
 }
@@ -114,10 +119,12 @@ function handleTrashSubmit() {
 function handleAvatarSubmit() {
   popupAvatar.setSaveButtonText('Сохранение...');
   api.setUserAvatar(avatarInput.value)
-    .then(result => {
-      setUserInfoFromResponse(result);
-      actualizeUserInfoElements();
-    })
+    .then(
+      result => {
+        popupAvatar.close();
+        setUserInfoFromResponse(result);
+      }
+    )
     .catch((err) => console.log(err))
     .finally(() => popupAvatar.setSaveButtonText('Сохранить'));
 }
@@ -171,9 +178,10 @@ const section = new Section(
   '.elements');
 
 Promise.all([api.getUserInfo(), api.getInitialCards()])
-  .then(result => {
-    setUserInfoFromResponse(result[0]);
-    actualizeUserInfoElements();
-    section.renderItems(result[1].reverse());
-  })
+  .then(
+    ([userResponse, cardsResponse]) =>
+      {
+        setUserInfoFromResponse(userResponse);
+        section.renderItems(cardsResponse.reverse());
+      })
   .catch((err) => console.log(err)); 

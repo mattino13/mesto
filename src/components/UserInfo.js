@@ -1,11 +1,16 @@
 export class UserInfo {
-  constructor({userSelector, infoSelector}) {
-    this._user = document.querySelector(userSelector).textContent;
-    this._info = document.querySelector(infoSelector).textContent;
+  constructor({userSelector, infoSelector, avatarSelector}) {
+    this._userElement = document.querySelector(userSelector);
+    this._infoElement = document.querySelector(infoSelector);
+    this._avatarElement = document.querySelector(avatarSelector);
   }
 
   getUserInfo() {
-    return {user: this._user, info: this._info, avatar: this._avatar};
+    return {
+      user: this._userElement.textContent, 
+      info: this._infoElement.textContent, 
+      avatar: this._avatarElement.src
+    };
   }
 
   getMyId() {
@@ -13,9 +18,9 @@ export class UserInfo {
   }
 
   setUserInfo({user, info, myId, avatar}) {
-    this._user = user;
-    this._info = info;
+    this._userElement.textContent = user;
+    this._infoElement.textContent = info;
+    this._avatarElement.src = avatar;
     this._myId = myId;
-    this._avatar = avatar;
   }
 }

@@ -21,7 +21,6 @@ export class PopupWithForm extends Popup {
   _handleFormSubmit (evt) {
     evt.preventDefault();
     this._formSubmitCallback(this._getInputValues());
-    this.close();
   }
 
   setSaveButtonText(text) {
